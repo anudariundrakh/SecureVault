@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: securevault-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: securevault
+      POSTGRES_PASSWORD: securevault_dev_password
+      POSTGRES_DB: securevault
+    ports:
+      - "5433:5432"
+    volumes:
+      - securevault_postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U securevault -d securevault"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  securevault_postgres_data:
